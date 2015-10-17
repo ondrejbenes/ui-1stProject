@@ -28,13 +28,13 @@ namespace Barin
 
             while (queue.Count > 0)
             {
-                IList<Node> nodes = GetNodesWithNextStates(queue.Dequeue());
-                foreach (var node in nodes)
+                IList<AbstractState> states = GetNextStates(queue.Dequeue());
+                foreach (var state in states)
                 {
-                    if (!uniqeStates.Contains(node.State))
+                    if (!uniqeStates.Contains(state))
                     {
-                        uniqeStates.Add(node.State);
-                        queue.Enqueue(node);
+                        uniqeStates.Add(state);
+                        queue.Enqueue(new Node(state));
                     }
                 }
             }

@@ -28,5 +28,29 @@ namespace Barin
                 }
             }
         }
+
+        public static void CreateNodeTreeWithUniqueStates(Node root, params AbstractAction[] actions)
+        {
+            SortedSet<AbstractState> uniqeStates = new SortedSet<AbstractState>();
+            uniqeStates.Add(root.State);
+            Queue<Node> queue = new Queue<Node>();
+            queue.Enqueue(root);
+
+            while (queue.Count > 0)
+            {
+                Node curNode = queue.Dequeue();
+                foreach (var action in actions)
+                {
+                    AbstractState state = action.execute(curNode);
+                    if (state != null && !uniqeStates.Contains(state))
+                    {
+                        Node newNode = new Node(action, state, curNode);
+                        curNode.Children.Add(newNode);
+                        uniqeStates.Add(state);
+                        queue.Enqueue(newNode);
+                    }
+                }
+            }
+        }
     }
 }

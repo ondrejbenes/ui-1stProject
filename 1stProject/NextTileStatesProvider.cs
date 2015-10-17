@@ -34,7 +34,6 @@ namespace _1stProject
                 if (state != null && state is TilesState)
                 {
                     Node newNode = new Node(action, state, node);
-                    node.Children.Add(newNode);
                     nodes.Add(newNode);
                 }
             }

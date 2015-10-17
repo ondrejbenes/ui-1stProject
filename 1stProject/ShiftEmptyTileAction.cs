@@ -9,30 +9,44 @@ namespace _1stProject
 {
     abstract class ShiftEmptyTileAction : AbstractAction
     {
-        public enum ShiftDirection { LEFT, RIGHT, UP, DOWN}
+        public enum ShiftDirectionEnum { LEFT, RIGHT, UP, DOWN }
+
+        public ShiftDirectionEnum ShiftDirection { get; private set; }
+
+        public ShiftEmptyTileAction(ShiftDirectionEnum shiftDirection) 
+        {
+            this.ShiftDirection = shiftDirection;
+        }
 
         public override abstract AbstractState execute(Node node);
 
-        protected bool CanShift(ShiftDirection direction, int EmptyTileRowCoord, int EmptyTileColumnCoord)
+        protected bool CanShift(ShiftDirectionEnum direction, int EmptyTileRowCoord, int EmptyTileColumnCoord)
         {
             switch(direction)
             {
-                case ShiftDirection.LEFT:
+                case ShiftDirectionEnum.LEFT:
                     return EmptyTileColumnCoord > 0;
-                case ShiftDirection.RIGHT:
+                case ShiftDirectionEnum.RIGHT:
                     return EmptyTileColumnCoord < TilesState.columns - 1;
-                case ShiftDirection.UP:
+                case ShiftDirectionEnum.UP:
                     return EmptyTileRowCoord > 0;
-                case ShiftDirection.DOWN:
+                case ShiftDirectionEnum.DOWN:
                     return EmptyTileRowCoord < TilesState.rows - 1;
                 default: throw new ArgumentException("Unknown direction");
             }
+        }
+
+        public override string ToString()
+        {
+            return "Shift " + ShiftDirection;
         }
         
     }
 
     class ShiftEmptyTileLeftAction : ShiftEmptyTileAction
     {
+        public ShiftEmptyTileLeftAction() : base(ShiftDirectionEnum.LEFT) {}
+
         public override AbstractState execute(Node node)
         {
             if (!(node.State is TilesState))
@@ -41,7 +55,7 @@ namespace _1stProject
             int[,] tiles = state.GetTiles();
             int rowCoord = state.EmptyTileRowCoord;
             int colCoord = state.EmptyTileColumnCoord;
-            if (CanShift(ShiftDirection.LEFT, rowCoord, colCoord))
+            if (CanShift(ShiftDirectionEnum.LEFT, rowCoord, colCoord))
             {
                 tiles[rowCoord, colCoord] = tiles[rowCoord, colCoord - 1];
                 tiles[rowCoord, colCoord - 1] = 0;
@@ -54,6 +68,8 @@ namespace _1stProject
 
     class ShiftEmptyTileRightAction : ShiftEmptyTileAction
     {
+        public ShiftEmptyTileRightAction() : base(ShiftDirectionEnum.RIGHT) { }
+
         public override AbstractState execute(Node node)
         {
             if (!(node.State is TilesState))
@@ -62,7 +78,7 @@ namespace _1stProject
             int[,] tiles = state.GetTiles();
             int rowCoord = state.EmptyTileRowCoord;
             int colCoord = state.EmptyTileColumnCoord;
-            if (CanShift(ShiftDirection.RIGHT, rowCoord, colCoord))
+            if (CanShift(ShiftDirectionEnum.RIGHT, rowCoord, colCoord))
             {
                 tiles[rowCoord, colCoord] = tiles[rowCoord, colCoord + 1];
                 tiles[rowCoord, colCoord + 1] = 0;
@@ -75,6 +91,8 @@ namespace _1stProject
 
     class ShiftEmptyTileUpAction : ShiftEmptyTileAction
     {
+        public ShiftEmptyTileUpAction() : base(ShiftDirectionEnum.UP) { }
+
         public override AbstractState execute(Node node)
         {
             if (!(node.State is TilesState))
@@ -83,7 +101,7 @@ namespace _1stProject
             int[,] tiles = state.GetTiles();
             int rowCoord = state.EmptyTileRowCoord;
             int colCoord = state.EmptyTileColumnCoord;
-            if (CanShift(ShiftDirection.UP, rowCoord, colCoord))
+            if (CanShift(ShiftDirectionEnum.UP, rowCoord, colCoord))
             {
                 tiles[rowCoord, colCoord] = tiles[rowCoord - 1, colCoord];
                 tiles[rowCoord - 1, colCoord] = 0;
@@ -96,6 +114,8 @@ namespace _1stProject
 
     class ShiftEmptyTileDownAction : ShiftEmptyTileAction
     {
+        public ShiftEmptyTileDownAction() : base(ShiftDirectionEnum.DOWN) { }
+
         public override AbstractState execute(Node node)
         {
             if (!(node.State is TilesState))
@@ -104,7 +124,7 @@ namespace _1stProject
             int[,] tiles = state.GetTiles();
             int rowCoord = state.EmptyTileRowCoord;
             int colCoord = state.EmptyTileColumnCoord;
-            if (CanShift(ShiftDirection.DOWN, rowCoord, colCoord))
+            if (CanShift(ShiftDirectionEnum.DOWN, rowCoord, colCoord))
             {
                 tiles[rowCoord, colCoord] = tiles[rowCoord + 1, colCoord];
                 tiles[rowCoord + 1, colCoord] = 0;

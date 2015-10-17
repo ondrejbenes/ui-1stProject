@@ -53,5 +53,15 @@ namespace Barin
             return new NodeTreeWidthIterator(this);
         }
 
+        public NodeTreeDepthIterator GetDepthIterator()
+        {
+            return new NodeTreeDepthIterator(this);
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Id: {0}\nParent Id: {1}\nReached by: {2}\nDepth: {3}\nState: {4}\n", this.Id, (this.Parent == null) ? "N/A" : this.Parent.Id.ToString(), this.Action, this.Depth, this.State);
+        }
+
     }
 }

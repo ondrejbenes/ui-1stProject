@@ -49,6 +49,22 @@ namespace _1stProject
             return copy;
         }
 
+        public override string ToString()
+        {
+            String retString = "\n";
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    retString += tiles[i, j] + " ";
+                }
+                retString += "\n";
+            }
+
+            return retString;
+        }
+
         public override bool Equals(object obj)
         {
             if(obj is TilesState)

@@ -21,14 +21,22 @@ namespace Barin
 
     class NodeTreeDepthIterator : NodeTreeIterator
     {
-        public NodeTreeDepthIterator()
+        public NodeTreeDepthIterator(Node root)
         {
+            this.root = root;
             collection = new LinkedList<Node>();
+            collection.AddFirst(root);
         }
         
         public override Node Next()
         {
-            throw new NotImplementedException();
+            var ret = collection.First();
+            collection.RemoveFirst();
+            ret.Children.Reverse();
+            ret.Children.ForEach(o => collection.AddFirst(o));
+            ret.Children.Reverse();
+
+            return ret;
         }
     }
 
@@ -43,8 +51,8 @@ namespace Barin
 
         public override Node Next()
         {
-            var ret = collection.Last();
-            collection.RemoveLast();
+            var ret = collection.First();
+            collection.RemoveFirst();
             ret.Children.ForEach(o => collection.AddLast(o));
 
             return ret;
