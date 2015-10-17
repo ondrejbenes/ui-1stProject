@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace _1stProject
 {
-    class NextUniqeTileStatesProvider : NextUniqeStatesProvider
+    class NextTileStatesProvider : NextStatesProvider
     {
-        public NextUniqeTileStatesProvider(ICollection<AbstractState> uniqeStates, IList<AbstractAction> actions) : base(uniqeStates, actions) {}
+        public NextTileStatesProvider(IList<AbstractAction> actions) : base(actions) {}
 
         public override IList<AbstractState> GetNextStates(Node node)
         {
@@ -19,11 +19,7 @@ namespace _1stProject
                 AbstractState state = action.execute(node);
                 if (state != null && state is TilesState)
                 {
-                    if(!uniqeStates.Contains(state))
-                    {
-                        uniqeStates.Add(state);
-                        states.Add(state);
-                    }
+                    states.Add(state);
                 }
             }
             return states;
@@ -37,13 +33,9 @@ namespace _1stProject
                 AbstractState state = action.execute(node);
                 if (state != null && state is TilesState)
                 {
-                    if (!uniqeStates.Contains(state))
-                    {
-                        Node newNode = new Node(action, state, node);
-                        node.Children.Add(newNode);
-                        uniqeStates.Add(state);
-                        nodes.Add(newNode);
-                    }
+                    Node newNode = new Node(action, state, node);
+                    node.Children.Add(newNode);
+                    nodes.Add(newNode);
                 }
             }
             return nodes;

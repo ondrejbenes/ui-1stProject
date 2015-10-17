@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>_1stProject</RootNamespace>
     <AssemblyName>1stProject</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,11 +46,10 @@
   <ItemGroup>
     <Compile Include="BARIN\AbstractAction.cs" />
     <Compile Include="BARIN\AbstractState.cs" />
-    <Compile Include="BARIN\AllStatesProvider.cs" />
     <Compile Include="BARIN\NodeTreeFactory.cs" />
     <Compile Include="BARIN\NodeTreeIterator.cs" />
-    <Compile Include="NextUniqeTileStatesProvider.cs" />
-    <Compile Include="BARIN\NextUniqueStatesProvider.cs" />
+    <Compile Include="NextTileStatesProvider.cs" />
+    <Compile Include="BARIN\NextStatesProvider.cs" />
     <Compile Include="BARIN\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
