@@ -49,9 +49,8 @@
     <Compile Include="Barin\BarinException.cs" />
     <Compile Include="Barin\NodeGraphFactory.cs" />
     <Compile Include="Barin\PathBuilder.cs" />
+    <Compile Include="Barin\PathTransformer.cs" />
     <Compile Include="Barin\TreeNode.cs" />
-    <Compile Include="NextTileStatesProvider.cs" />
-    <Compile Include="Barin\NextStatesProvider.cs" />
     <Compile Include="Barin\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

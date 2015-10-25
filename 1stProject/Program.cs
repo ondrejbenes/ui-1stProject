@@ -30,37 +30,32 @@ namespace _1stProject
             {
                 var path = PathBuilder.BuildNodePath(root, new Node(new TilesState(new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } })), uniqueNodes.Count);
 
-                foreach (var node in path)
-                    Console.Write(node.State);
-
-                foreach (var action in PathBuilder.TransformNodePathToActionPath(path))
+                foreach (var action in PathTransformer.TransformNodePathToActionPath(path))
                     Console.WriteLine(action);
             }
             catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
+            
+            Console.WriteLine("\n-----------\n");
 
             try
             {
                 var path = PathBuilder.BuildNodePath(root, new Node(new TilesState(new int[,] { { 8, 0, 6 }, { 5, 4, 7 }, { 2, 3, 1 } })), uniqueNodes.Count);
 
-                foreach (var node in path)
-                    Console.Write(node.State);
-
-                foreach (var action in PathBuilder.TransformNodePathToActionPath(path))
+                foreach (var action in PathTransformer.TransformNodePathToActionPath(path))
                     Console.WriteLine(action);
             }
             catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
+
+            Console.WriteLine("\n-----------\n");
 
             try
             {
                 var path = PathBuilder.BuildNodePath(root, new Node(new TilesState(new int[,] { { 1, 2, 3 }, { 8, 0, 4 }, { 7, 6, 5 } })), uniqueNodes.Count);
 
-                foreach (var node in path)
-                    Console.Write(node.State);
-
-                foreach (var action in PathBuilder.TransformNodePathToActionPath(path))
+                foreach (var action in PathTransformer.TransformNodePathToActionPath(path))
                     Console.WriteLine(action);
             }
-            catch (PathNotFoundException ex) {Console.WriteLine(ex.Message);}
+            catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
 
             Console.ReadKey();
         }

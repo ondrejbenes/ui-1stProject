@@ -9,77 +9,28 @@ namespace Barin
 {
     class PathBuilder
     {
-
-        /// <exception cref="PathNotFoundException">Throws if all nodes are traveresd and no Path is found</exception>
         public static LinkedList<Node> BuildNodePath(Node Start, Node Goal, long NodesCountInSystem)
         {
-            bool cutOff = false;
-            int depth = 1;
+            int depthLimit = 0;
+            bool found = false;
             TreeNode start = new TreeNode(Start);
             TreeNode goal = new TreeNode(Goal);
-            while (cutOff == false)
-            {
-                cutOff = DepthLimitedSearch(start, goal, depth, NodesCountInSystem);
-                depth *= 2;
-            }
-            return BuildPath(start, goal);
-        }
-        
-        public static LinkedList<AbstractAction> TransformNodePathToActionPath(LinkedList<Node> NodePath)
-        {
-            var nodePathArray = NodePath.ToArray();
-            LinkedList<AbstractAction> actionPath = new LinkedList<AbstractAction>();
-            for(int i = 0; i < NodePath.Count; i++)
-            {
-                foreach(var child in nodePathArray[i].Children)
-                {
-                    if (child.Item1.State.Equals(nodePathArray[i + 1].State))
-                        actionPath.AddLast(child.Item2);
-                }
-            }
-
-            return actionPath;
-        }
-
-        /// <exception cref="PathNotFoundException">Throws if all nodes are traveresd and no Path is found</exception>
-        private static bool DepthLimitedSearch(TreeNode Start, TreeNode Goal, int depthLimit, long NodesCountInSystem)
-        {
+            LinkedList<TreeNode> toExpand = new LinkedList<TreeNode>();
             Dictionary<long, TreeNode> discoveredNodes = new Dictionary<long, TreeNode>();
-            Stack<TreeNode> Fringe = new Stack<TreeNode>();
-            Fringe.Push(Start);
-            while (Fringe.Count != 0)
-            {
-                TreeNode Parent = Fringe.Pop();
-                if (Parent.Node.State.Equals(Goal.Node.State))
-                {
-                    Goal.Parent = Parent.Parent;
-                    return true;
-                }
-                if (Parent.Depth == depthLimit)
-                    continue;
-                else
-                {
-                    foreach(var child in Parent.Node.Children)
-                    {
-                        if (!discoveredNodes.ContainsKey(child.Item1.Id))
-                        {
-                            TreeNode Tem = new TreeNode(child.Item1, Parent);
-                            discoveredNodes.Add(Tem.Node.Id, Tem);
-                            Fringe.Push(Tem);
-                        }
-                    }
-                }
-            }
-            if (discoveredNodes.Count == NodesCountInSystem)
-                throw new PathNotFoundException("Path not found!");
-            return false;
-        }
 
-        private static LinkedList<Node> BuildPath(TreeNode Start, TreeNode Goal)
-        {
+            toExpand.AddFirst(start);
+            discoveredNodes.Add(start.Node.Id, start);
+            while (!found)
+            {
+                toExpand = FringeSearchIteration(goal, toExpand, discoveredNodes, depthLimit, ref found);
+                depthLimit++;
+                if (discoveredNodes.Count == NodesCountInSystem)
+                    throw new PathNotFoundException("Path not found!");
+            }
+
             LinkedList<Node> path = new LinkedList<Node>();
-            TreeNode cur = Goal;
-            while(cur != Start)
+            TreeNode cur = goal;
+            while (cur != start)
             {
                 path.AddFirst(cur.Node);
                 cur = cur.Parent;
@@ -87,6 +38,49 @@ namespace Barin
             path.AddFirst(cur.Node);
 
             return path;
+        }
+
+        /*
+         * Fringe search makes use of a data structure that is more or less two lists to iterate over the frontier or fringe of the search tree. 
+         * One list now, stores the current iteration, and the other list later stores the immediate next iteration. 
+         * So from the root node of the search tree, now will be the root and later will be empty. 
+         * Then the algorithm takes one of two actions: If ƒ(head) is greater than the current threshold, remove head from now and append it to the end of later; 
+         * i.e. save head for the next iteration. 
+         * Otherwise, if ƒ(head) is less than or equal to the threshold, expand head and discard head, consider its children, adding them to the beginning of now. 
+         * At the end of an iteration, the threshold is increased, the later list becomes the now list, and later is emptied.
+         */
+        private static LinkedList<TreeNode> FringeSearchIteration(TreeNode Goal, LinkedList<TreeNode> toExpand, Dictionary<long, TreeNode> discoveredNodes, int depthLimit, ref bool found)
+        {
+            LinkedList<TreeNode> now = toExpand;
+            LinkedList<TreeNode> later = new LinkedList<TreeNode>();
+
+            while (now.Count != 0)
+            {
+                TreeNode Current = now.First();
+                now.RemoveFirst();
+                if (Current.Node.State.Equals(Goal.Node.State))
+                {
+                    Goal.Parent = Current.Parent;
+                    found = true;
+                }
+                if (Current.Depth > depthLimit)
+                {
+                    later.AddLast(Current);
+                }
+                else
+                {
+                    foreach (var child in Current.Node.Children)
+                    {
+                        if (!discoveredNodes.ContainsKey(child.Item1.Id))
+                        {
+                            TreeNode Tem = new TreeNode(child.Item1, Current);
+                            discoveredNodes.Add(Tem.Node.Id, Tem);
+                            now.AddFirst(Tem);
+                        }
+                    }
+                }
+            }
+            return later;
         }
     }
 }
