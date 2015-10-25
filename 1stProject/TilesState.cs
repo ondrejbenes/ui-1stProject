@@ -67,9 +67,8 @@ namespace _1stProject
 
         public override bool Equals(object obj)
         {
-            if(obj is TilesState)
-                if (this.Hash.Equals((obj as TilesState).Hash))
-                    return true;
+            if(obj is TilesState && this.Hash.Equals((obj as TilesState).Hash))
+                return true;
             return false;
         }
 

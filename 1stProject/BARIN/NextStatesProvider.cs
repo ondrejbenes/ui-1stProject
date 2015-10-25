@@ -19,10 +19,10 @@ namespace Barin
 
         public abstract IList<Node> GetNodesWithNextStates(Node node);
 
-        public SortedSet<AbstractState> GetUniqueStates(Node root)
+        public Dictionary<int, AbstractState> GetUniqueStates(Node root)
         {
-            SortedSet<AbstractState> uniqeStates = new SortedSet<AbstractState>();
-            uniqeStates.Add(root.State);
+            Dictionary<int, AbstractState> uniqeStates = new Dictionary<int, AbstractState>();
+            uniqeStates.Add(root.State.GetHashCode(), root.State);
             Queue<Node> queue = new Queue<Node>();
             queue.Enqueue(root);
 
@@ -31,9 +31,9 @@ namespace Barin
                 IList<AbstractState> states = GetNextStates(queue.Dequeue());
                 foreach (var state in states)
                 {
-                    if (!uniqeStates.Contains(state))
+                    if (!uniqeStates.ContainsKey(state.GetHashCode()))
                     {
-                        uniqeStates.Add(state);
+                        uniqeStates.Add(state.GetHashCode(), state);
                         queue.Enqueue(new Node(state));
                     }
                 }

@@ -44,13 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BARIN\AbstractAction.cs" />
-    <Compile Include="BARIN\AbstractState.cs" />
-    <Compile Include="BARIN\NodeTreeFactory.cs" />
-    <Compile Include="BARIN\NodeTreeIterator.cs" />
+    <Compile Include="Barin\AbstractAction.cs" />
+    <Compile Include="Barin\AbstractState.cs" />
+    <Compile Include="Barin\BarinException.cs" />
+    <Compile Include="Barin\NodeGraphFactory.cs" />
+    <Compile Include="Barin\PathBuilder.cs" />
+    <Compile Include="Barin\TreeNode.cs" />
     <Compile Include="NextTileStatesProvider.cs" />
-    <Compile Include="BARIN\NextStatesProvider.cs" />
-    <Compile Include="BARIN\Node.cs" />
+    <Compile Include="Barin\NextStatesProvider.cs" />
+    <Compile Include="Barin\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShiftEmptyTileAction.cs" />

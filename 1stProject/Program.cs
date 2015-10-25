@@ -11,12 +11,7 @@ namespace _1stProject
     {
         static void Main(string[] args)
         {
-            int[,] rootMatrix = new int[,]
-            {
-                {7, 2, 4 },
-                {5, 0, 6 },
-                {8, 3, 1 }
-            };
+            int[,] rootMatrix = new int[,] {{7, 2, 4 },{5, 0, 6 },{8, 3, 1 }};
             TilesState rootState = new TilesState(rootMatrix);
             
             IList<AbstractAction> actions = new List<AbstractAction>();
@@ -27,34 +22,45 @@ namespace _1stProject
 
             Node root = new Node(rootState);
 
-            /* 
-            NextStatesProvider nextStatesProvider = new NextTileStatesProvider(actions);
+            var uniqueNodes = NodeGraphFactory.CreateGraph(root, actions.ToArray());
 
-            ICollection<AbstractState> uniqueStates = nextStatesProvider.GetUniqueStates(root);
-            
-            Console.WriteLine(uniqueStates.Count);
-            */
+            Console.WriteLine(uniqueNodes.Count);
 
-            NodeTreeFactory.CreateNodeTreeWithUniqueStates(root, actions.ToArray());
-            Console.BufferHeight = 2000;
-
-            long counter = 0L;
-
-            /*
-            var widthIt = root.GetWidthIterator();
-            while (widthIt.HasNext())
+            try
             {
-                Console.WriteLine(widthIt.Next());
-            }
-            */
+                var path = PathBuilder.BuildNodePath(root, new Node(new TilesState(new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } })), uniqueNodes.Count);
 
-            var depthIt = root.GetDepthIterator();
-            while (depthIt.HasNext() && counter < 100)
+                foreach (var node in path)
+                    Console.Write(node.State);
+
+                foreach (var action in PathBuilder.TransformNodePathToActionPath(path))
+                    Console.WriteLine(action);
+            }
+            catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
+
+            try
             {
-                Console.WriteLine(depthIt.Next());
-                counter++;
-            }
+                var path = PathBuilder.BuildNodePath(root, new Node(new TilesState(new int[,] { { 8, 0, 6 }, { 5, 4, 7 }, { 2, 3, 1 } })), uniqueNodes.Count);
 
+                foreach (var node in path)
+                    Console.Write(node.State);
+
+                foreach (var action in PathBuilder.TransformNodePathToActionPath(path))
+                    Console.WriteLine(action);
+            }
+            catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
+
+            try
+            {
+                var path = PathBuilder.BuildNodePath(root, new Node(new TilesState(new int[,] { { 1, 2, 3 }, { 8, 0, 4 }, { 7, 6, 5 } })), uniqueNodes.Count);
+
+                foreach (var node in path)
+                    Console.Write(node.State);
+
+                foreach (var action in PathBuilder.TransformNodePathToActionPath(path))
+                    Console.WriteLine(action);
+            }
+            catch (PathNotFoundException ex) {Console.WriteLine(ex.Message);}
 
             Console.ReadKey();
         }
