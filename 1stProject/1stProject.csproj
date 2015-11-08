@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\packages\C5.2.3.0.1\lib\net40\C5.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,18 +50,23 @@
     <Compile Include="Barin\AbstractAction.cs" />
     <Compile Include="Barin\AbstractState.cs" />
     <Compile Include="Barin\BarinException.cs" />
+    <Compile Include="Barin\HeuristicCalculator.cs" />
+    <Compile Include="Barin\NextStatesProvider.cs" />
     <Compile Include="Barin\NodeGraphFactory.cs" />
     <Compile Include="Barin\PathBuilder.cs" />
     <Compile Include="Barin\PathTransformer.cs" />
     <Compile Include="Barin\TreeNode.cs" />
     <Compile Include="Barin\Node.cs" />
+    <Compile Include="NextTilesStatesProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShiftEmptyTileAction.cs" />
+    <Compile Include="TilesHeuristicCalculator.cs" />
     <Compile Include="TilesState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

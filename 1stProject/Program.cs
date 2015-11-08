@@ -21,10 +21,30 @@ namespace _1stProject
             actions.Add(new ShiftEmptyTileDownAction());
 
             Node root = new Node(rootState);
+            /*
+            HeuristicCalculator calculator = new TilesHeuristicCalculator();
+            NextStatesProvider provider = new NextTileStatesProvider(actions);
 
+            // Console.WriteLine(calculator.Calculate(rootState, new TilesState(new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } })));
+
+            try
+            {
+                var path = PathBuilder.BuildNodePathUsingAStar(root, new Node(new TilesState(new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } })), calculator, provider);
+
+                //foreach (var node in path)
+                 //   Console.WriteLine(node);
+
+                //foreach (var action in PathTransformer.TransformNodePathToActionPath(path))
+                    //Console.WriteLine(action);
+            }
+            catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
+
+            */
+            
+            
             var uniqueNodes = NodeGraphFactory.CreateGraph(root, actions.ToArray());
 
-            Console.WriteLine(uniqueNodes.Count);
+            //Console.WriteLine(uniqueNodes.Count);
 
             try
             {
@@ -34,9 +54,8 @@ namespace _1stProject
                     Console.WriteLine(action);
             }
             catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
-            
+            /*
             Console.WriteLine("\n-----------\n");
-
             try
             {
                 var path = PathBuilder.BuildNodePath(root, new Node(new TilesState(new int[,] { { 8, 0, 6 }, { 5, 4, 7 }, { 2, 3, 1 } })), uniqueNodes.Count);
@@ -56,7 +75,7 @@ namespace _1stProject
                     Console.WriteLine(action);
             }
             catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
-
+            */
             Console.ReadKey();
         }
     }

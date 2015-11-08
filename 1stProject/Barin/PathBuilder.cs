@@ -9,8 +9,88 @@ namespace Barin
 {
     class PathBuilder
     {
+        public static LinkedList<Node> BuildNodePathUsingAStar(Node Start, Node Goal, HeuristicCalculator Calculator, NextStatesProvider Provider)
+        {
+            int expandedNodesCount = 0;
+            bool found = false;
+            TreeNode start = new TreeNode(Start);
+            TreeNode goal = new TreeNode(null);
+            var toExpand = new C5.IntervalHeap<TreeNode>(new TreeNodeCostComparer());
+            var discoveredTreeNodes = new Dictionary<int, TreeNode>();
+
+            start.Cost = Calculator.Calculate(Start.State, Goal.State);
+            toExpand.Add(start);
+            discoveredTreeNodes.Add(start.Node.State.GetHashCode(), start);
+
+            while (toExpand.Count > 0)
+            {
+                TreeNode Current = toExpand.FindMin();
+                toExpand.DeleteMin();
+
+                if (Current.Node.State.Equals(Goal.State))
+                {
+                    goal = Current;
+                    found = true;
+                    break;
+                }
+
+                expandedNodesCount++;
+                foreach (var nextNode in Provider.GetNodesWithNextStates(Current.Node))
+                {
+                    double Cost = Calculator.Calculate(nextNode.State, Goal.State);
+                    if (!discoveredTreeNodes.ContainsKey(nextNode.State.GetHashCode()))
+                    {
+                        TreeNode Tem = new TreeNode(nextNode, Current, Current.Cost + Cost);
+                        Current.Children.AddLast(Tem);
+                        discoveredTreeNodes.Add(nextNode.State.GetHashCode(), Tem);
+                        toExpand.Add(Tem);
+                    }
+                    else 
+                    {
+                        CheckIfBetterPathWasFound(discoveredTreeNodes, Current, nextNode, Cost);                    
+                    }
+                }   
+            }
+
+            Console.WriteLine("Expanded {0} nodes", expandedNodesCount);
+
+            if (!found)
+                throw new PathNotFoundException("Path not found!");
+            
+            return createPath(goal, start);
+        }
+
+        private static void CheckIfBetterPathWasFound(Dictionary<int, TreeNode> discoveredTreeNodes, TreeNode Current, Node nextNode, double Cost)
+        {
+            var updateCandidate = discoveredTreeNodes[nextNode.State.GetHashCode()];
+            if (updateCandidate.Cost > Current.Cost + Cost)
+            {
+                var costDifference = updateCandidate.Cost - (Current.Cost + Cost);
+
+                Current.Children.AddLast(updateCandidate);
+                updateCandidate.Parent.Children.Remove(updateCandidate);
+                updateCandidate.Parent = Current;
+                updateCandidate.Cost = Current.Cost + Cost;
+
+                var candidateChildren = new LinkedList<TreeNode>(updateCandidate.Children);
+                while (candidateChildren.Count > 0)
+                {
+                    var child = candidateChildren.First();
+                    candidateChildren.RemoveFirst();
+
+                    foreach (var item in child.Children)
+                        candidateChildren.AddLast(item);
+
+                    child.Cost -= costDifference;
+                }
+            }
+        }
+
+
         public static LinkedList<Node> BuildNodePath(Node Start, Node Goal, long NodesCountInSystem)
         {
+            int expandedNodesCount = 0;
+            int nodesInNowList = 0;
             int depthLimit = 0;
             bool found = false;
             TreeNode start = new TreeNode(Start);
@@ -22,22 +102,17 @@ namespace Barin
             discoveredNodes.Add(start.Node.Id, start);
             while (!found)
             {
-                toExpand = FringeSearchIteration(goal, toExpand, discoveredNodes, depthLimit, ref found);
+                toExpand = FringeSearchIteration(goal, toExpand, discoveredNodes, depthLimit, ref found, ref expandedNodesCount);
+                nodesInNowList += toExpand.Count;
                 depthLimit++;
                 if (discoveredNodes.Count == NodesCountInSystem)
                     throw new PathNotFoundException("Path not found!");
             }
 
-            LinkedList<Node> path = new LinkedList<Node>();
-            TreeNode cur = goal;
-            while (cur != start)
-            {
-                path.AddFirst(cur.Node);
-                cur = cur.Parent;
-            }
-            path.AddFirst(cur.Node);
+            Console.WriteLine("Expanded {0} nodes", expandedNodesCount);
+            Console.WriteLine("Nodes in now list: {0}", nodesInNowList);
 
-            return path;
+            return createPath(goal, start);
         }
 
         /*
@@ -49,7 +124,7 @@ namespace Barin
          * Otherwise, if ƒ(head) is less than or equal to the threshold, expand head and discard head, consider its children, adding them to the beginning of now. 
          * At the end of an iteration, the threshold is increased, the later list becomes the now list, and later is emptied.
          */
-        private static LinkedList<TreeNode> FringeSearchIteration(TreeNode Goal, LinkedList<TreeNode> toExpand, Dictionary<long, TreeNode> discoveredNodes, int depthLimit, ref bool found)
+        private static LinkedList<TreeNode> FringeSearchIteration(TreeNode Goal, LinkedList<TreeNode> toExpand, Dictionary<long, TreeNode> discoveredNodes, int depthLimit, ref bool found, ref int expendedNodesCount)
         {
             LinkedList<TreeNode> now = toExpand;
             LinkedList<TreeNode> later = new LinkedList<TreeNode>();
@@ -69,6 +144,7 @@ namespace Barin
                 }
                 else
                 {
+                    expendedNodesCount++;
                     foreach (var child in Current.Node.Children)
                     {
                         if (!discoveredNodes.ContainsKey(child.Item1.Id))
@@ -81,6 +157,21 @@ namespace Barin
                 }
             }
             return later;
+        }
+
+        private static LinkedList<Node> createPath(TreeNode from, TreeNode to)
+        {
+            LinkedList<Node> path = new LinkedList<Node>();
+
+            TreeNode cur = from;
+            while (cur != to)
+            {
+                path.AddFirst(cur.Node);
+                cur = cur.Parent;
+            }
+            path.AddFirst(cur.Node);
+
+            return path;
         }
     }
 }
