@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prace 1 az 3", "1stProject\Prace 1 az 3.csproj", "{BEE2E9A3-20C0-41C5-A2D3-259E77440021}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Barin", "Barin\Barin.csproj", "{89D65F45-A0E5-404A-96AE-24DC5B4C12EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prace 4", "Prace 4\Prace 4.csproj", "{FAA54730-8AB0-4113-BE8C-14714B29C00E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEE2E9A3-20C0-41C5-A2D3-259E77440021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEE2E9A3-20C0-41C5-A2D3-259E77440021}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEE2E9A3-20C0-41C5-A2D3-259E77440021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEE2E9A3-20C0-41C5-A2D3-259E77440021}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D65F45-A0E5-404A-96AE-24DC5B4C12EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D65F45-A0E5-404A-96AE-24DC5B4C12EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D65F45-A0E5-404A-96AE-24DC5B4C12EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D65F45-A0E5-404A-96AE-24DC5B4C12EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAA54730-8AB0-4113-BE8C-14714B29C00E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAA54730-8AB0-4113-BE8C-14714B29C00E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAA54730-8AB0-4113-BE8C-14714B29C00E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAA54730-8AB0-4113-BE8C-14714B29C00E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

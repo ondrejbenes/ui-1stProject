@@ -21,7 +21,7 @@ namespace _1stProject
             actions.Add(new ShiftEmptyTileDownAction());
 
             Node root = new Node(rootState);
-            /*
+            
             HeuristicCalculator calculator = new TilesHeuristicCalculator();
             NextStatesProvider provider = new NextTileStatesProvider(actions);
 
@@ -29,17 +29,17 @@ namespace _1stProject
 
             try
             {
-                var path = PathBuilder.BuildNodePathUsingAStar(root, new Node(new TilesState(new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } })), calculator, provider);
+                var path = PathBuilder.BuildNodePathUsingAStarWithoutSystem(root, new Node(new TilesState(new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } })), calculator, provider);
 
                 //foreach (var node in path)
                  //   Console.WriteLine(node);
 
-                //foreach (var action in PathTransformer.TransformNodePathToActionPath(path))
-                    //Console.WriteLine(action);
+                foreach (var action in PathTransformer.TransformNodePathToActionPath(path))
+                    Console.WriteLine(action);
             }
             catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
 
-            */
+            /*
             
             
             var uniqueNodes = NodeGraphFactory.CreateGraph(root, actions.ToArray());
@@ -54,7 +54,6 @@ namespace _1stProject
                     Console.WriteLine(action);
             }
             catch (PathNotFoundException ex) { Console.WriteLine(ex.Message); }
-            /*
             Console.WriteLine("\n-----------\n");
             try
             {

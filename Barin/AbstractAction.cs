@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Barin;
 
 namespace Barin
 {
-    abstract class AbstractState : IComparable
+    public abstract class AbstractAction
     {
-        public abstract int CompareTo(object obj);
+        abstract public AbstractState execute(Node node);
     }
 }

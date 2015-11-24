@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Barin
 {
-    class NodeGraphFactory
+    public class NodeGraphFactory
     {
         public static Dictionary<AbstractState, Node> CreateGraph(Node root, params AbstractAction[] actions)
         {

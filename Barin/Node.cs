@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Barin
 {
-    class Node
+    public class Node
     {
         static long currentId = 0L;
 
@@ -16,7 +16,7 @@ namespace Barin
 
         public Node(AbstractState State)
         {
-            this.Id = ++currentId;
+            this.Id = currentId++;
             this.State = State;
             this.Children = new List<Tuple<Node, AbstractAction>>();
         }

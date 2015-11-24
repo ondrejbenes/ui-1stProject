@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Barin
 {
-    abstract class NextStatesProvider
+    public abstract class NextStatesProvider
     {
         protected IList<AbstractAction> actions;
 

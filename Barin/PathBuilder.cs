@@ -7,9 +7,60 @@ using System.Threading.Tasks;
 
 namespace Barin
 {
-    class PathBuilder
+    public class PathBuilder
     {
-        public static LinkedList<Node> BuildNodePathUsingAStar(Node Start, Node Goal, HeuristicCalculator Calculator, NextStatesProvider Provider)
+        public static LinkedList<Node> BuildNodePathUsingAStarWithSystem(Node Start, Node Goal, HeuristicCalculator Calculator)
+        {
+            int expandedNodesCount = 0;
+            bool found = false;
+            TreeNode start = new TreeNode(Start);
+            TreeNode goal = new TreeNode(null);
+            var toExpand = new C5.IntervalHeap<TreeNode>(new TreeNodeCostComparer());
+            var discoveredTreeNodes = new Dictionary<int, TreeNode>();
+
+            start.Cost = Calculator.Calculate(Start.State, Goal.State);
+            toExpand.Add(start);
+            discoveredTreeNodes.Add(start.Node.State.GetHashCode(), start);
+
+            while (toExpand.Count > 0)
+            {
+                TreeNode Current = toExpand.FindMin();
+                toExpand.DeleteMin();
+
+                if (Current.Node.State.Equals(Goal.State))
+                {
+                    goal = Current;
+                    found = true;
+                    break;
+                }
+
+                expandedNodesCount++;
+                foreach (var nextNode in Current.Node.Children)
+                {
+                    double Cost = Calculator.Calculate(nextNode.Item1.State, Goal.State);
+                    if (!discoveredTreeNodes.ContainsKey(nextNode.Item1.State.GetHashCode()))
+                    {
+                        TreeNode Tem = new TreeNode(nextNode.Item1, Current, Current.Cost + Cost);
+                        Current.Children.AddLast(Tem);
+                        discoveredTreeNodes.Add(nextNode.Item1.State.GetHashCode(), Tem);
+                        toExpand.Add(Tem);
+                    }
+                    else
+                    {
+                        CheckIfBetterPathWasFound(discoveredTreeNodes, Current, nextNode.Item1, Cost);
+                    }
+                }
+            }
+
+            Console.WriteLine("Expanded {0} nodes", expandedNodesCount);
+
+            if (!found)
+                throw new PathNotFoundException("Path not found!");
+
+            return createPath(goal, start);
+        }
+
+        public static LinkedList<Node> BuildNodePathUsingAStarWithoutSystem(Node Start, Node Goal, HeuristicCalculator Calculator, NextStatesProvider Provider)
         {
             int expandedNodesCount = 0;
             bool found = false;

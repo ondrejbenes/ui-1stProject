@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Barin
 {
-    abstract class AbstractAction
+    public abstract class AbstractState : IComparable
     {
-        abstract public AbstractState execute(Node node);
+        public abstract int CompareTo(object obj);
     }
 }

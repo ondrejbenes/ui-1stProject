@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Barin
 {
-    class PathTransformer
+    public class PathTransformer
     {
         public static LinkedList<AbstractAction> TransformNodePathToActionPath(LinkedList<Node> NodePath)
         {
             var nodePathArray = NodePath.ToArray();
             LinkedList<AbstractAction> actionPath = new LinkedList<AbstractAction>();
-            for (int i = 0; i < NodePath.Count; i++)
+            for (int i = 0; i < NodePath.Count - 1; i++)
             {
                 foreach (var child in nodePathArray[i].Children)
                 {
